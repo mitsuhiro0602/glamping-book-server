@@ -45,7 +45,7 @@ const glampingSchema = new Schema({
   to: {
     type: Date,
   },
-  bed: {
+  person: {
     type: Number,
   }
 }, {timestamps: true})

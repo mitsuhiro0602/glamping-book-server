@@ -30,3 +30,20 @@ export const create = async(req, res ) => {
     });
   }
 };
+
+export const glampings = async(req, res) => {
+  let all = await Glamping.find({})
+    .limit(24)
+    .select('-image.data')
+    .populate("postedBy", '_id name')
+    .exec();
+  res.json(all)
+}
+
+export const image =  async(req, res) => {
+  let glamping = await Glamping.findById(req.params.glampingId).exec();
+  if(glamping && glamping.image && glamping.image.data !== null) {
+    res.set('Content-Type', glamping.image.contentType)
+    return res.send(glamping.image.data);
+  }
+}
