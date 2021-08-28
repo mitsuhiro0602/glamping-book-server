@@ -28,12 +28,15 @@ export const register = async(req, res) => {
 export const login = async(req, res) => {
   try {
     const { email, password} = req.body;
+    // check if user with that email exist
     let user = await User.findOne({email}).exec();
+    // console.log('USER EXIST', user);
     if(!user) return res.status(400).send('User with that email not found');
     // compare password
     user.comparePassword(password, (err, match) => {
       console.log('COMPARE PASSWORD IN LOGIN ERR', err)
       if(!match || err) return res.status(400).send("Wrong password");
+      // GENERATE A TOKEN THEN SENDS AS RESPONSE TO CLIENT
       let token = jwt.sign({_id: user._id}, process.env.JWT_SECRET, {
         expiresIn: '7d',
       });

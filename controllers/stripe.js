@@ -1,4 +1,5 @@
 import User from '../models/user';
+import Glamping from "../models/glamping";
 import Stripe from 'stripe';
 import queryString from "query-string";
 
@@ -93,3 +94,39 @@ export const payoutSetting = async (req, res) => {
     console.log('STRIPE PAYOUT SETTING',err)
   }
 }
+
+export const stripeSessionId = async(req, res) => {
+  console.log('you hit stripe session id ', req.body.glampingId);
+
+  const { glampingId } = req.body
+  const item = await Glamping.findById(glampingId).populate('postedBy').exec();
+  const fee = (item.price * 20) / 100;
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    line_items: [
+      {
+        name: item.title,
+        amount: item.price,
+        currency: 'jpy',
+        quantity: 1,
+      },
+    ],
+
+    payment_intent_data: {
+      application_fee_amount: fee,
+      transfer_data: {
+        destination: item.postedBy.stripe_account_id,
+      },
+    },
+    success_url: `${process.env.STRIPE_SUCCESS_URL}/${item._id}`,
+    cancel_url: process.env.STRIPE_CANCEL_URL,
+
+  });
+
+  await User.findByIdAndUpdate(req.user._id, {stripeSession: session}).exec()
+  res.send({
+    sessionId: session.id,
+  })
+};
+

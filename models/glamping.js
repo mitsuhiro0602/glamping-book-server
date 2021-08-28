@@ -23,7 +23,7 @@ const glampingSchema = new Schema({
     trim: true
   },
   tags: {
-    type: String,
+    type: [String],
   },
   type: {
     type: Number,
@@ -33,7 +33,7 @@ const glampingSchema = new Schema({
   },
   postedBy: {
     type: ObjectId,
-    ref: 'User'
+    ref: 'User',
   },
   image: {
     data: Buffer,
