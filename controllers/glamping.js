@@ -1,6 +1,6 @@
 import Glamping from "../models/glamping";
 import fs from 'fs'
-
+import Order from "../models/order"
 
 export const create = async(req, res ) => {
   try{
@@ -96,4 +96,29 @@ export const update = async (req, res) => {
   } catch(err) {
     res.status(400).send('Glamping update failed. Try again.')
   }
+}
+
+export const userGlampingBookings = async(req, res) => {
+  const all = await Order.find({orderedBy: req.user._id})
+    .select('session')
+    .populate('glamping', '-image.data')
+    .populate('orderedBy', '_id name')
+    .exec();
+  console.log('all', all)
+  res.json(all);
+};
+
+export const isAlreadyBooked = async(req, res) => {
+  const { glampingId } = req.params;
+  const userOrders = await Order.find({orderedBy: req.user._id})
+    .select('glamping')
+    .exec()
+
+  let ids = []
+  for (let i = 0; i < userOrders.length; i++) {
+    ids.push(userOrders[i].glamping.toString());
+  }
+  res.json({
+    ok: ids.includes(glampingId)
+  })
 }
