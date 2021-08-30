@@ -3,6 +3,7 @@ import fs from 'fs'
 import Order from "../models/order"
 
 export const create = async(req, res ) => {
+  res.set({ 'Access-Control-Allow-Origin': '*' });
   try{
     let fields = req.fields
     let files = req.files
@@ -20,12 +21,11 @@ export const create = async(req, res ) => {
         console.log('saving glamping err ===>', err)
         res.status(400).send('Error saving')
       }
-      res.set({ 'Access-Control-Allow-Origin': '*' });
+
       res.json(result);
     });
   }catch(err){
     console.log(err)
-    res.set({ 'Access-Control-Allow-Origin': '*' });
     res.status(400).json({
       err: err.message,
     });
@@ -34,13 +34,13 @@ export const create = async(req, res ) => {
 
 export const glampings = async(req, res) => {
   // let all = await Glamping.find({})
+  res.set({ 'Access-Control-Allow-Origin': '*' });
   let all = await Glamping.find({})
   // let all = await Glamping.find({ "from": { $gte: new Date() } })
     .limit(24)
     .select('-image.data')
     .populate("postedBy", '_id name')
     .exec();
-  res.set({ 'Access-Control-Allow-Origin': '*' });
   res.json(all)
 }
 
