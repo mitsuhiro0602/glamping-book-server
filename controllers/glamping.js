@@ -31,7 +31,9 @@ export const create = async(req, res ) => {
 };
 
 export const glampings = async(req, res) => {
+  // let all = await Glamping.find({})
   let all = await Glamping.find({})
+  // let all = await Glamping.find({ "from": { $gte: new Date() } })
     .limit(24)
     .select('-image.data')
     .populate("postedBy", '_id name')
@@ -121,4 +123,18 @@ export const isAlreadyBooked = async(req, res) => {
   res.json({
     ok: ids.includes(glampingId)
   })
+}
+
+export const searchListings = async (req, res) => {
+  const {location, date, person} = req.body
+
+  const fromDate = date.split(',');
+  // console.log(fromDate[0])
+  let result = await Glamping.find({ 
+    from: {$gte: new Date(fromDate[0])},
+    // location
+  })
+    .select('-image.data')
+    .exec();
+  res.json(result);
 }

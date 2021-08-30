@@ -8,7 +8,8 @@ import {
   read,
   update,
   userGlampingBookings,
-  isAlreadyBooked
+  isAlreadyBooked,
+  searchListings
 } from '../controllers/glamping';
 import formidable from 'express-formidable';
 import { glampingOwner, requireSignin } from '../middlewares';
@@ -23,7 +24,8 @@ router.delete('/delete-glamping/:glampingId',requireSignin ,glampingOwner ,remov
 router.put('/update-glamping/:glampingId', requireSignin, formidable(), glampingOwner, update);
 
 // orders
-router.get('/user-glamping-bookings', requireSignin, userGlampingBookings)
-router.get('/isalready-booked/:glampingId', requireSignin, isAlreadyBooked)
+router.get('/user-glamping-bookings', requireSignin, userGlampingBookings);
+router.get('/isalready-booked/:glampingId', requireSignin, isAlreadyBooked);
+router.post('/search-listings', searchListings)
 
 module.exports = router;
