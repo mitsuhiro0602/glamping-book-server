@@ -2,7 +2,7 @@ import User from '../models/user';
 import jwt from 'jsonwebtoken';
 
 export const register = async(req, res) => {
-  // res.set({ 'Access-Control-Allow-Origin': '*' });
+  res.set({ 'Access-Control-Allow-Origin': '*' });
   try {
     // console.log(req.body);
     const {name, email, password} = req.body;
