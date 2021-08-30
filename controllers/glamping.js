@@ -3,7 +3,7 @@ import fs from 'fs'
 import Order from "../models/order"
 
 export const create = async(req, res ) => {
-  res.set({ 'Access-Control-Allow-Origin': '*' });
+  // res.set({ 'Access-Control-Allow-Origin': '*' });
   try{
     let fields = req.fields
     let files = req.files
@@ -34,7 +34,7 @@ export const create = async(req, res ) => {
 
 export const glampings = async(req, res) => {
   // let all = await Glamping.find({})
-  res.set({ 'Access-Control-Allow-Origin': '*' });
+  // res.set({ 'Access-Control-Allow-Origin': '*' });
   let all = await Glamping.find({})
   // let all = await Glamping.find({ "from": { $gte: new Date() } })
     .limit(24)
