@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const {Schema} = mongoose;
 
@@ -50,4 +50,4 @@ const glampingSchema = new Schema({
   }
 }, {timestamps: true})
 
-export default mongoose.model('Glamping', glampingSchema);
+module.exports = mongoose.model('Glamping', glampingSchema);

@@ -1,5 +1,5 @@
-import express from 'express';
-import { 
+const express = require('express');
+const { 
   create,
   glampings,
   image,
@@ -10,9 +10,9 @@ import {
   userGlampingBookings,
   isAlreadyBooked,
   searchListings
-} from '../controllers/glamping';
-import formidable from 'express-formidable';
-import { glampingOwner, requireSignin } from '../middlewares';
+} = require('../controllers/glamping');
+const formidable = require('express-formidable');
+const { glampingOwner, requireSignin } = require('../middlewares');
 
 const router = express.Router();
 router.post('/create-glamping', requireSignin, formidable(), create);

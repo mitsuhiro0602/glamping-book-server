@@ -1,7 +1,7 @@
-import User from '../models/user';
-import jwt from 'jsonwebtoken';
+const User = require('../models/user');
+const jwt = require('jsonwebtoken');
 
-export const register = async(req, res) => {
+exports.register = async(req, res) => {
   // res.set({ 'Access-Control-Allow-Origin': '*' });
   try {
     // console.log(req.body);
@@ -26,7 +26,7 @@ export const register = async(req, res) => {
   }
 };
 
-export const login = async(req, res) => {
+exports.login = async(req, res) => {
   try {
     const { email, password} = req.body;
     // check if user with that email exist

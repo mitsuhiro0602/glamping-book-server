@@ -1,12 +1,12 @@
-import User from '../models/user';
-import Stripe from 'stripe';
-import queryString from "query-string";
-import Glamping from "../models/glamping";
-import Order from '../models/order';
+const User = require('../models/user');
+const Stripe = require('stripe');
+const queryString = require("query-string");
+const Glamping = require("../models/glamping");
+const Order = require('../models/order');
 
 const stripe = Stripe(process.env.STRIPE_SECRET)
 
-export const CreateConnectAccount = async(req, res) => {
+exports.CreateConnectAccount = async(req, res) => {
   const user = await User.findById(req.user._id).exec();
 
   if(!user.stripe_account_id) {
@@ -46,7 +46,7 @@ const updateDelayDays = async(accountId) => {
   return account;
 }
 
-export const getAccountStatus = async(req, res) => {
+exports.getAccountStatus = async(req, res) => {
   // console.log('GET ACCOUNT STATUS')
   const user = await User.findById(req.user._id).exec();
   const account = await stripe.account.retrieve(user.stripe_account_id)
@@ -66,7 +66,7 @@ export const getAccountStatus = async(req, res) => {
   res.json(updatedUser);
 };
 
-export const getAccountBalance = async(req, res ) => {
+exports.getAccountBalance = async(req, res ) => {
   const user = await User.findById(req.user._id).exec();
 
   try {
@@ -80,7 +80,7 @@ export const getAccountBalance = async(req, res ) => {
   }
 };
 
-export const payoutSetting = async (req, res) => {
+exports.payoutSetting = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).exec();
     const loginLink = await stripe.accounts.createLoginLink(
@@ -96,7 +96,7 @@ export const payoutSetting = async (req, res) => {
   }
 }
 
-export const stripeSessionId = async(req, res) => {
+exports.stripeSessionId = async(req, res) => {
   console.log('you hit stripe session id ', req.body.glampingId);
 
   const { glampingId } = req.body
@@ -131,7 +131,7 @@ export const stripeSessionId = async(req, res) => {
   })
 };
 
-export const stripeSuccess = async(req, res) => {
+exports.stripeSuccess = async(req, res) => {
   try {
 
     const { glampingId } = req.body

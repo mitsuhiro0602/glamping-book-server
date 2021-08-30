@@ -1,8 +1,8 @@
-import Glamping from "../models/glamping";
-import fs from 'fs'
-import Order from "../models/order"
+const Glamping = require("../models/glamping");
+const fs = require('fs')
+const Order = require("../models/order")
 
-export const create = async(req, res ) => {
+exports.create = async(req, res ) => {
   // res.set({ 'Access-Control-Allow-Origin': '*' });
   try{
     let fields = req.fields
@@ -32,7 +32,7 @@ export const create = async(req, res ) => {
   }
 };
 
-export const glampings = async(req, res) => {
+exports.glampings = async(req, res) => {
   // let all = await Glamping.find({})
   // res.set({ 'Access-Control-Allow-Origin': '*' });
   let all = await Glamping.find({})
@@ -45,7 +45,7 @@ export const glampings = async(req, res) => {
 }
 
 
-export const image =  async(req, res) => {
+exports.image =  async(req, res) => {
   let glamping = await Glamping.findById(req.params.glampingId).exec();
   if(glamping && glamping.image && glamping.image.data !== null) {
     res.set('Content-Type', glamping.image.contentType)
@@ -53,7 +53,7 @@ export const image =  async(req, res) => {
   }
 }
 
-export const sellerGlampings = async(req, res) => {
+exports.sellerGlampings = async(req, res) => {
   let all = await Glamping.find({postedBy: req.user._id})
     .select('-image.data')
     .populate('postedBy', '_id name')
@@ -62,14 +62,14 @@ export const sellerGlampings = async(req, res) => {
   res.send(all);
 }
 
-export const remove = async(req, res) => {
+exports.remove = async(req, res) => {
   let removed = await Glamping.findByIdAndDelete(req.params.glampingId)
     .select('-image.data')
     .exec();
   res.json(removed);
 };
 
-export const read = async(req, res) => {
+exports.read = async(req, res) => {
   let glamping = await Glamping.findById(req.params.glampingId)
     .populate('postedBy', '_id name')
     .select('-image.data')
@@ -78,7 +78,7 @@ export const read = async(req, res) => {
   res.json(glamping)
 }
 
-export const update = async (req, res) => {
+exports.update = async (req, res) => {
   try {
     let fields = req.fields;
     let files = req.files;
@@ -103,7 +103,7 @@ export const update = async (req, res) => {
   }
 }
 
-export const userGlampingBookings = async(req, res) => {
+exports.userGlampingBookings = async(req, res) => {
   const all = await Order.find({orderedBy: req.user._id})
     .select('session')
     .populate('glamping', '-image.data')
@@ -113,7 +113,7 @@ export const userGlampingBookings = async(req, res) => {
   res.json(all);
 };
 
-export const isAlreadyBooked = async(req, res) => {
+exports.isAlreadyBooked = async(req, res) => {
   const { glampingId } = req.params;
   const userOrders = await Order.find({orderedBy: req.user._id})
     .select('glamping')
@@ -128,7 +128,7 @@ export const isAlreadyBooked = async(req, res) => {
   })
 }
 
-export const searchListings = async (req, res) => {
+exports.searchListings = async (req, res) => {
   const {location, date, person} = req.body
 
   const fromDate = date.split(',');
