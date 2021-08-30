@@ -3,7 +3,6 @@ const fs = require('fs')
 const Order = require("../models/order")
 
 exports.create = async(req, res ) => {
-  // res.set({ 'Access-Control-Allow-Origin': '*' });
   try{
     let fields = req.fields
     let files = req.files

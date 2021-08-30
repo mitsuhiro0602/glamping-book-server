@@ -2,7 +2,6 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
 exports.register = async(req, res) => {
-  // res.set({ 'Access-Control-Allow-Origin': '*' });
   try {
     // console.log(req.body);
     const {name, email, password} = req.body;
