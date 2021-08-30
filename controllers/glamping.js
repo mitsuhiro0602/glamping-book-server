@@ -20,10 +20,12 @@ export const create = async(req, res ) => {
         console.log('saving glamping err ===>', err)
         res.status(400).send('Error saving')
       }
+      res.set({ 'Access-Control-Allow-Origin': '*' });
       res.json(result);
     });
   }catch(err){
     console.log(err)
+    res.set({ 'Access-Control-Allow-Origin': '*' });
     res.status(400).json({
       err: err.message,
     });
@@ -38,6 +40,7 @@ export const glampings = async(req, res) => {
     .select('-image.data')
     .populate("postedBy", '_id name')
     .exec();
+  res.set({ 'Access-Control-Allow-Origin': '*' });
   res.json(all)
 }
 
